@@ -76,6 +76,11 @@ elseif(UNIX)
     )
 endif()
 
+if(ANDROID)
+    # bionic has no getcontext/makecontext/swapcontext; use an asm backend.
+    target_sources(rexcore PRIVATE fiber_android.cpp filesystem_android.cpp)
+endif()
+
 # Xenos data-format layer (stateless; headers under include/rex/graphics/).
 # The GPU emulation consuming it lives in the rexgpu-xenos plugin.
 target_sources(rexcore PRIVATE
@@ -100,6 +105,8 @@ target_include_directories(rexcore PRIVATE
 
 if(APPLE)
     target_link_libraries(rexcore PRIVATE pthread)
+elseif(ANDROID)
+    target_link_libraries(rexcore PRIVATE dl)
 elseif(UNIX)
     target_link_libraries(rexcore PRIVATE pthread rt dl)
 endif()

@@ -36,8 +36,12 @@
 
 #include <rex/ui/surface_mac.h>
 #else
+#if REX_PLATFORM_ANDROID
+#include <rex/ui/surface_android.h>
+#else
 #include <X11/Xlib-xcb.h>
 #include <rex/ui/surface_gnulinux.h>
+#endif
 #endif
 
 namespace rex::ui {
@@ -396,6 +400,15 @@ std::unique_ptr<Surface> WindowSDL::CreateSurfaceImpl(Surface::TypeFlags allowed
         return std::make_unique<CAMetalLayerSurface>(sdl_window_, metal_view, layer);
       }
       SDL_Metal_DestroyView(metal_view);
+    }
+  }
+#elif REX_PLATFORM_ANDROID
+  if (allowed_types & Surface::kTypeFlag_AndroidNativeWindow) {
+    SDL_PropertiesID props = SDL_GetWindowProperties(sdl_window_);
+    auto* native_window = static_cast<ANativeWindow*>(
+        SDL_GetPointerProperty(props, SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER, nullptr));
+    if (native_window) {
+      return std::make_unique<AndroidNativeWindowSurface>(native_window);
     }
   }
 #else
