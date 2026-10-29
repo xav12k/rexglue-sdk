@@ -1,12 +1,4 @@
 
-#if defined(__ANDROID__)
-#include <android/api-level.h>
-namespace rex {
-    inline int GetAndroidApiLevel() {
-        return android_get_api_level();
-    }
-}
-#endif
 
 #pragma once
 /**
