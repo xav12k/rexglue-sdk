@@ -1,3 +1,5 @@
+#define SDL_MAIN_HANDLED
+#include <SDL3/SDL_main.h>
 /**
  * @file        ui/windowed_app_main_sdl.cpp
  * @brief       Entry point for windowed applications (SDL3 windowing)
@@ -127,6 +129,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hinstance_prev, LPWSTR comman
 #else
 
 int main(int argc, char* argv[]) {
+  SDL_SetMainReady();
   return RunWindowedApp(argc, argv);
 }
 
