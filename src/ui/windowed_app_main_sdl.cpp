@@ -1,4 +1,6 @@
+#if !defined(__ANDROID__)
 #define SDL_MAIN_HANDLED
+#endif
 #include <SDL3/SDL_main.h>
 /**
  * @file        ui/windowed_app_main_sdl.cpp
